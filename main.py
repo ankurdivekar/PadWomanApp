@@ -3,6 +3,7 @@ import cv2
 from PIL import Image
 import numpy as np
 import qrcode
+from pathlib import Path
 from io import BytesIO
 
 tabs = st.tabs(["Door Entry Manager", "Invite Generator"])
@@ -30,11 +31,11 @@ with tab_invite:
     name = st.text_input("Name")
     st.button("Generate Invite")
     if name:
-        st.text(f"Generating invite for {name}")
+        st.text(f"Generating invite for {Path(__file__).parent}")
 
         # Generate invite here
 
-        logo = Image.open("Assets/Logo.jpg")
+        logo = Image.open(Path(__file__).parent / "Assets/Logo.jpg")
         # taking base width
         basewidth = 100
 
@@ -63,11 +64,11 @@ with tab_invite:
         QRimg2 = QRimg.resize((300, 300), Image.LANCZOS)
 
         # Get invite image
-        invite = Image.open("Assets/InviteTemplate.bmp")
+        invite = Image.open(Path(__file__).parent / "Assets/InviteTemplate.bmp")
 
         invite.paste(QRimg2, (730, 40))
 
-        # invite.save("Assets/YourInvite.png")
+        # invite.save(Path(__file__).parent / "Assets/YourInvite.png")
 
         print("Invite generated!")
 
