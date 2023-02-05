@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_qrcode_scanner import qrcode_scanner
-import streamlit_toggle as stog
+from streamlit_toggle import st_toggle_switch
+
 
 # # tabs = st.tabs(["Invite Generator", "Door Entry Manager"])
 
@@ -46,7 +47,7 @@ def display_data(qr_string):
     st.session_state["SeatsAvailable"] = info[4]
 
 
-toggle = stog.st_toggle_switch(
+toggle = st_toggle_switch(
     label="Scan",
     key="qr_toggle",
     default_value=False,
