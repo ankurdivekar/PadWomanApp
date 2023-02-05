@@ -27,29 +27,26 @@ if image is not None:
 tab_invite = tabs[1]
 with tab_invite:
 
-    st.text("Enter the name of the person you want to invite")
-    name = st.text_input("Name")
+    booking_name = st.text_input("Enter the name of the person you want to invite")
+    booking_mobile = st.text_input(
+        "Enter the mobile number of the person you want to invite"
+    )
+    seats_total = st.text_input("Enter the number of seats you want to book")
+
     st.button("Generate Invite")
-    if name:
-        st.text(f"Generating invite for {Path(__file__).parents[0]}")
+    if booking_name and booking_mobile and seats_total:
 
-        # Generate invite here
-
+        # Generate invite
         logo = Image.open(Path(__file__).parents[0] / "assets/Logo.jpg")
-        # taking base width
         basewidth = 100
 
         # adjust image size
         wpercent = basewidth / float(logo.size[0])
         hsize = int((float(logo.size[1]) * float(wpercent)))
-        logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
+        logo = logo.resize((basewidth, hsize), Image.LANCZOS)
         QRcode = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
 
-        BookingName = "Ankur Divekar"
-        BookingMobile = "9923317669"
-        SeatsTotal = "12"
-
-        QRcode.add_data(f"{BookingName}, {BookingMobile}, {SeatsTotal}")
+        QRcode.add_data(f"{booking_name}, {booking_mobile}, {seats_total}")
         QRcode.make(fit=True)
 
         QRimg = QRcode.make_image(
@@ -70,11 +67,11 @@ with tab_invite:
 
         # invite.save(Path(__file__).parent / "assets/YourInvite.png")
 
-        print("Invite generated!")
-
         buf = BytesIO()
         invite.save(buf, format="JPEG")
         byte_im = buf.getvalue()
+
+        st.text(f"Invite for {seats_total} seats generated for {booking_name}")
 
         btn = st.download_button(
             label="Download Invite",
