@@ -35,7 +35,7 @@ with tab_invite:
 
         # Generate invite here
 
-        logo = Image.open(Path(__file__).parents[0] / "Assets/Logo.jpg")
+        logo = Image.open(Path(__file__).parents[0] / "assets/Logo.jpg")
         # taking base width
         basewidth = 100
 
@@ -64,11 +64,11 @@ with tab_invite:
         QRimg2 = QRimg.resize((300, 300), Image.LANCZOS)
 
         # Get invite image
-        invite = Image.open(Path(__file__).parents[0] / "Assets/InviteTemplate.bmp")
+        invite = Image.open(Path(__file__).parents[0] / "assets/InviteTemplate.bmp")
 
         invite.paste(QRimg2, (730, 40))
 
-        # invite.save(Path(__file__).parent / "Assets/YourInvite.png")
+        # invite.save(Path(__file__).parent / "assets/YourInvite.png")
 
         print("Invite generated!")
 
