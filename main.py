@@ -31,11 +31,11 @@ with tab_invite:
     name = st.text_input("Name")
     st.button("Generate Invite")
     if name:
-        st.text(f"Generating invite for {Path(__file__).parent}")
+        st.text(f"Generating invite for {Path(__file__).parents[0]}")
 
         # Generate invite here
 
-        logo = Image.open(Path(__file__).parent / "Assets/Logo.jpg")
+        logo = Image.open(Path(__file__).parents[0] / "Assets/Logo.jpg")
         # taking base width
         basewidth = 100
 
@@ -64,7 +64,7 @@ with tab_invite:
         QRimg2 = QRimg.resize((300, 300), Image.LANCZOS)
 
         # Get invite image
-        invite = Image.open(Path(__file__).parent / "Assets/InviteTemplate.bmp")
+        invite = Image.open(Path(__file__).parents[0] / "Assets/InviteTemplate.bmp")
 
         invite.paste(QRimg2, (730, 40))
 
@@ -77,7 +77,7 @@ with tab_invite:
         byte_im = buf.getvalue()
 
         btn = st.download_button(
-            label="Download Image",
+            label="Download Invite",
             data=byte_im,
             file_name="YourInvitation.jpg",
             mime="image/jpeg",
