@@ -34,7 +34,7 @@ with tab_invite:
 
         # Generate invite here
 
-        logo = Image.open("Assets/logo.jpg")
+        logo = Image.open("Assets/Logo.jpg")
         # taking base width
         basewidth = 100
 
