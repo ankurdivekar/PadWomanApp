@@ -1,4 +1,3 @@
+numpy==1.24.1
+opencv_python==4.7.0.68
 streamlit==1.17.0
-streamlit_qrcode_scanner==0.1.2
-streamlit_toggle==0.1.3
-streamlit_toggle_switch==1.0.2
