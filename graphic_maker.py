@@ -6,7 +6,7 @@ from pathlib import Path
 from io import BytesIO
 
 
-def generate_invite():
+def generate_invite(booking_name, booking_mobile, seats_total):
 
     # Generate invite
     logo = Image.open(Path(__file__).parents[0] / "assets/Logo.jpg")
