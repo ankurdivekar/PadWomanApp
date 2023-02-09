@@ -32,7 +32,7 @@ def database_ops():
         with create_connection(db_file) as conn:
             st.write(conn)  # success message?
 
-            query = conn.execute("SELECT * FROM Registrations")
+            query = conn.execute("SELECT * FROM Registration")
             cols = [column[0] for column in query.description]
             results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
             st.dataframe(results_df)
@@ -69,7 +69,7 @@ def database_ops():
                 f"CREATE TABLE {table_name} (UUID UID, BookingName TEXT, BookingPhone TEXT PRIMARY KEY, SeatsTotal INTEGER, SeatsOccupied INTEGER)"
             )
             cur.execute(
-                "INSERT INTO Registrations (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
                 (str(uuid.uuid1()), "Ankur", "12345", 12, 0),
             )
             conn.commit()
@@ -128,16 +128,16 @@ def insert_row_into_db(bname, bmobile, seats_total):
         cur = conn.cursor()
 
         cur.execute(
-            "INSERT OR IGNORE INTO Registrations (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
+            "INSERT OR IGNORE INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
             (uuid_tmp, bname, bmobile, 0, 0),
         )
         cur.execute(
-            "UPDATE Registrations SET SeatsTotal = SeatsTotal + ? WHERE BookingPhone = ?",
+            "UPDATE Registration SET SeatsTotal = SeatsTotal + ? WHERE BookingPhone = ?",
             (seats_total, bmobile),
         )
 
         # cur.execute(
-        #     "INSERT INTO Registrations (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
+        #     "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
         #     (uuid_tmp, bname, bmobile, seats_total, "0"),
         # )
         conn.commit()
