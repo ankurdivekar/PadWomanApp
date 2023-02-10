@@ -138,6 +138,12 @@ def manage_entry():
                         st.write(f"Entry confirmed for {entry} seats!")
 
 
+st.sidebar.markdown("""---""")
+st.sidebar.title("PadWoman2 Event App")
+st.sidebar.markdown("Built with :heart: by [Ankur](https://instagram.com/raagarock)")
+st.sidebar.markdown("""---""")
+
+
 page_names_to_funcs = {
     # "Upload Data": upload_data,
     # "Run Query": run_query,
