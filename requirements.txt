@@ -3,4 +3,4 @@ opencv_python_headless==4.7.0.68
 Pillow==9.4.0
 qrcode==7.4.1
 streamlit==1.17.0
-pandas=1.5.3
+pandas==1.5.3
