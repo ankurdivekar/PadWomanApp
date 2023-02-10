@@ -4,41 +4,45 @@ import numpy as np
 import qrcode
 from pathlib import Path
 from io import BytesIO
+import streamlit as st
 
 
-def generate_invite(booking_name, booking_mobile, seats_total):
+def generate_invite_graphic(booking_uuid):
 
     # Generate invite
-    logo = Image.open(Path(__file__).parents[0] / "assets/Logo.jpg")
-    basewidth = 100
+    # logo = Image.open(Path(__file__).parents[0] / "assets/Logo.jpg")
+    # basewidth = 295
 
     # adjust image size
-    wpercent = basewidth / float(logo.size[0])
-    hsize = int((float(logo.size[1]) * float(wpercent)))
-    logo = logo.resize((basewidth, hsize), Image.LANCZOS)
+    # wpercent = basewidth / float(logo.size[0])
+    # hsize = int((float(logo.size[1]) * float(wpercent)))
+    # logo = logo.resize((basewidth, hsize), Image.LANCZOS)
     QRcode = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
 
-    QRcode.add_data(f"{booking_name}, {booking_mobile}, {seats_total}")
+    QRcode.add_data(f"PadWoman2:{booking_uuid}")
     QRcode.make(fit=True)
 
     QRimg = QRcode.make_image(
-        fill_color=(52, 52, 52),
-        back_color=(222, 222, 222),
+        fill_color="white",  # (253, 154, 0),
+        back_color=(93, 18, 12),
     ).convert("RGB")
 
     # set size of QR code
-    pos = ((QRimg.size[0] - logo.size[0]) // 2, (QRimg.size[1] - logo.size[1]) // 2)
-    QRimg.paste(logo, pos)
+    # pos = ((QRimg.size[0] - logo.size[0]) // 2, (QRimg.size[1] - logo.size[1]) // 2)
+    # QRimg.paste(logo, pos)
 
-    QRimg2 = QRimg.resize((300, 300), Image.LANCZOS)
+    qr_final_size = 295
+    QRimg2 = QRimg.resize((qr_final_size, qr_final_size), Image.LANCZOS)
 
     # Get invite image
-    invite = Image.open(Path(__file__).parents[0] / "assets/InviteTemplate.bmp")
+    invite = Image.open(Path(__file__).parents[0] / "assets/InviteTemplate.jpg")
 
-    invite.paste(QRimg2, (730, 40))
+    invite.paste(QRimg2, (560, 1180))
 
-    # invite.save(Path(__file__).parent / "assets/YourInvite.png")
+    invite.save(Path(__file__).parent / "assets/YourInvite.png")
 
     buf = BytesIO()
     invite.save(buf, format="JPEG")
     byte_im = buf.getvalue()
+
+    return byte_im
