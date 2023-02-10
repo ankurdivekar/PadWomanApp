@@ -68,17 +68,6 @@ def get_booking_status(booking_phone):
         else:
             st.write(f"No booking found for {booking_phone}!")
 
-        # query = conn.execute(
-        #     f"SELECT * FROM {st.secrets['table_name']} WHERE BookingPhone = '{booking_phone}'"
-        # ).fetchone()
-        # if query is None:
-        #     st.write("No booking found")
-        # else:
-        #     st.write(query)
-        #     # st.write(f"Seats available: {query[0] - query[1]}")
-        #     # st.write(f"Seats occupied: {query[1]}")
-        #     # st.write(f"Seats total: {query[0]}")
-
 
 def update_seats_occupied(current_uuid, seats_occupied):
     with create_connection(st.secrets["db_file"]) as conn:
@@ -101,15 +90,15 @@ def reinitialize_db():
 
         cur.execute(
             "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
-            (str(uuid.uuid1()), "Ankur", "123", 14, 0),
+            (str(uuid.uuid1()), "Ankur", "1111111111", 14, 0),
         )
         cur.execute(
             "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
-            (str(uuid.uuid1()), "Meghana", "234", 10, 0),
+            (str(uuid.uuid1()), "Meghana", "2222222222", 10, 0),
         )
         cur.execute(
             "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
-            (str(uuid.uuid1()), "Sanket", "345", 17, 0),
+            (str(uuid.uuid1()), "Sanket", "3333333333", 17, 0),
         )
         conn.commit()
 
