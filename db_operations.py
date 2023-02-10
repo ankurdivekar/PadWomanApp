@@ -42,17 +42,49 @@ def execute_query(query):
             st.write(e)
 
 
+def get_seats_available(current_uuid):
+    with create_connection(st.secrets["db_file"]) as conn:
+        seats_available = 0
+
+        query = conn.execute(
+            f"SELECT SeatsTotal, SeatsOccupied FROM {st.secrets['table_name']} WHERE UUID = '{current_uuid}'"
+        ).fetchone()
+
+        # print(f"Seats for {current_uuid}: {query}")
+        seats_available = 0 if query is None else query[0] - query[1]
+        return seats_available
+
+
+def update_seats_occupied(current_uuid, seats_occupied):
+    with create_connection(st.secrets["db_file"]) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            f"UPDATE {st.secrets['table_name']} SET SeatsOccupied = SeatsOccupied + ? WHERE UUID = ?",
+            (seats_occupied, current_uuid),
+        )
+        conn.commit()
+
+
 def reinitialize_db():
     with create_connection(st.secrets["db_file"]) as conn:
         st.write(conn)  # success message?
         cur = conn.cursor()
         cur.execute(f"DROP TABLE IF EXISTS {st.secrets['table_name']}")
         cur.execute(
-            f"CREATE TABLE {st.secrets['table_name']} (UUID TEXT, BookingName TEXT, BookingPhone TEXT PRIMARY KEY, SeatsTotal INTEGER, SeatsOccupied INTEGER)"
+            f"CREATE TABLE {st.secrets['table_name']} (UUID UNIQUE, BookingName TEXT, BookingPhone TEXT PRIMARY KEY, SeatsTotal INTEGER, SeatsOccupied INTEGER)"
+        )
+
+        cur.execute(
+            "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
+            (str(uuid.uuid1()), "Ankur", "123", 14, 0),
         )
         cur.execute(
             "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
-            (str(uuid.uuid1()), "Ankur", "12345", 4, 0),
+            (str(uuid.uuid1()), "Meghana", "234", 10, 0),
+        )
+        cur.execute(
+            "INSERT INTO Registration (UUID, BookingName, BookingPhone, SeatsTotal, SeatsOccupied) VALUES (?, ?, ?, ?, ?)",
+            (str(uuid.uuid1()), "Sanket", "345", 17, 0),
         )
         conn.commit()
 
