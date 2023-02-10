@@ -11,6 +11,7 @@ from db_operations import (
     insert_row_into_db,
     upload_data,
 )
+from qrcode_reader import read_qr
 
 
 def database_ops():
@@ -69,13 +70,26 @@ def generate_invite():
         st.image(byte_im)
 
 
+def manage_entry():
+    image = st.camera_input("Scan QR code")
+    if image is not None:
+        data, qr = read_qr(image)
+        print(data)
+        if data:
+            st.write("Data read successfully!")
+            st.write(f"Data: <{data}>")
+            st.image(qr)
+        else:
+            st.write(f"No data found in QR code")
+
+
 page_names_to_funcs = {
     # "Upload Data": upload_data,
     # "Run Query": run_query,
     "Generate Invite": generate_invite,
+    "Manage Entry": manage_entry,
     "Database Ops": database_ops,
 }
-
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
