@@ -12,11 +12,30 @@ from db_operations import (
     upload_data,
     get_seats_available,
     update_seats_occupied,
+    get_booking_status,
 )
 from qrcode_reader import read_qr
 
 
 def database_ops():
+
+    st.markdown("# Check Booking")
+    booking_mobile = st.text_input("Enter the booking phone number")
+    if booking_mobile and not (
+        len(booking_mobile) == 10 and booking_mobile.isnumeric()
+    ):
+        st.error("Please enter a valid 10-digit mobile number")
+    check = st.button("Check")
+    if check:
+        if all(
+            [
+                booking_mobile,
+                len(booking_mobile) == 10,
+                booking_mobile.isnumeric(),
+            ]
+        ):
+            get_booking_status(booking_mobile)
+    st.markdown("""---""")
 
     st.markdown("# View Database")
     view_db = st.button("View Database")
@@ -71,10 +90,10 @@ def generate_invite():
                 booking_mobile.isnumeric(),
             ]
         ):
-            insert_row_into_db(booking_name, booking_mobile, seats_total)
-            byte_im = generate_invite_graphic(st.session_state.uuid_tmp)
+            current_uuid = insert_row_into_db(booking_name, booking_mobile, seats_total)
+            byte_im = generate_invite_graphic(current_uuid)
             st.write("Invite generated successfully!")
-            st.write("Your unique invite code is: ", st.session_state.uuid_tmp)
+            # st.write("Your unique invite code is: ", current_uuid)
             btn = st.download_button(
                 label="Download Invite",
                 data=byte_im,
