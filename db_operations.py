@@ -60,10 +60,11 @@ def get_booking_status(booking_phone):
         query = conn.execute(
             f"SELECT * FROM {st.secrets['table_name']} WHERE BookingPhone ='{booking_phone}'"
         )
-        print(query.fetchall())
-        if query.fetchall():
+        data = query.fetchall()
+        # print(data)
+        if data:
             cols = [column[0] for column in query.description]
-            results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+            results_df = pd.DataFrame.from_records(data=data, columns=cols)
             st.dataframe(results_df)
         else:
             st.write(f"No booking found for {booking_phone}!")
