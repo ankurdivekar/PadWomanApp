@@ -1,2 +1,2 @@
-# PadManApp
-An app built for Step N Step dance academy.
+# PadWomanApp
+An app built for the PadWoman event by Step N Step dance academy.
