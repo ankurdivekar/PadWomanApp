@@ -43,15 +43,15 @@ def execute_query(query):
 
 def get_seats_available(current_uuid):
     with create_connection(st.secrets["db_file"]) as conn:
-        seats_available = 0
 
         query = conn.execute(
-            f"SELECT SeatsTotal, SeatsOccupied FROM {st.secrets['table_name']} WHERE UUID = '{current_uuid}'"
+            f"SELECT BookingName, SeatsTotal, SeatsOccupied FROM {st.secrets['table_name']} WHERE UUID = '{current_uuid}'"
         ).fetchone()
 
         # print(f"Seats for {current_uuid}: {query}")
-        seats_available = 0 if query is None else query[0] - query[1]
-        return seats_available
+        seats_available = 0 if query is None else query[1] - query[2]
+        booking_name = "" if query is None else query[0]
+        return seats_available, booking_name
 
 
 def get_booking_status(booking_phone):
@@ -146,6 +146,21 @@ def insert_row_into_db(bname, bmobile, seats_total):
         # )
 
     return uuid_tmp
+
+
+def download_data():
+    with create_connection(st.secrets["db_file"]) as conn:
+        st.write(conn)  # success message?
+
+        query = conn.execute(f"SELECT * FROM {st.secrets['table_name']}")
+        cols = [column[0] for column in query.description]
+        results_df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+        st.download_button(
+            label="Download Data",
+            data=results_df.to_csv(index=False),
+            file_name="Registrations.csv",
+            mime="text/csv",
+        )
 
 
 def upload_data():
