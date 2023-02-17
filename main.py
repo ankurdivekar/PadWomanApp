@@ -48,9 +48,9 @@ def database_ops():
     download_data()
     st.markdown("""---""")
 
-    # st.markdown(" # Upload Data")
-    # upload_data()
-    # st.markdown("""---""")
+    st.markdown(" # Upload Data")
+    upload_data()
+    st.markdown("""---""")
 
     # st.markdown("# Run Query")
     # query = st.text_area("SQL Query", height=100)
