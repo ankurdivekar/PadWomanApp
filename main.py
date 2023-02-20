@@ -1,20 +1,23 @@
-import sqlite3
-import streamlit as st
-import pandas as pd
 import os
+import sqlite3
 import uuid
-from graphic_maker import generate_invite_graphic
+
+import pandas as pd
+import streamlit as st
+from streamlit_qrcode_scanner import qrcode_scanner
+
 from db_operations import (
-    show_db,
-    execute_query,
-    reinitialize_db,
-    insert_row_into_db,
-    upload_data,
-    get_seats_available,
-    update_seats_occupied,
-    get_booking_status,
     download_data,
+    execute_query,
+    get_booking_status,
+    get_seats_available,
+    insert_row_into_db,
+    reinitialize_db,
+    show_db,
+    update_seats_occupied,
+    upload_data,
 )
+from graphic_maker import generate_invite_graphic
 from qrcode_reader import read_qr
 
 
@@ -98,7 +101,7 @@ def database_ops():
 def generate_invite():
 
     booking_name = st.text_input("Enter the name of the person you want to invite")
-    if booking_name and not " " in booking_name:
+    if booking_name and " " not in booking_name:
         st.error("Please enter the full name of the person you want to invite")
 
     booking_mobile = st.text_input(
@@ -144,16 +147,20 @@ def generate_invite():
 
 
 def manage_entry():
-    image = st.camera_input("Scan QR code")
-    if image is not None:
-        data, qr = read_qr(image)
+    # image = st.camera_input("Scan QR code")
+    # if image is not None:
+    #     data, qr = read_qr(image)
+    #     current_uuid = data.split(":")[1] if "PadWoman2" in data else None
+
+    data = qrcode_scanner(key="qrcode_scanner")
+    if data:
         current_uuid = data.split(":")[1] if "PadWoman2" in data else None
 
         # TODO: Remove this line after testing
         # current_uuid = "3f75ee14-a94f-11ed-8648-b44023536a4f"
 
         if not current_uuid:
-            st.write(f"No booking data found in QR code")
+            st.write("No booking data found in QR code")
         else:
             # st.write("Data read successfully!")
             # st.write(f"Data: <{data}>")
@@ -185,8 +192,6 @@ st.sidebar.markdown("""---""")
 
 
 page_names_to_funcs = {
-    # "Upload Data": upload_data,
-    # "Run Query": run_query,
     "Generate Invite": generate_invite,
     "Manage Entry": manage_entry,
     "Database Ops": database_ops,

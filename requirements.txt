@@ -4,3 +4,4 @@ Pillow==9.4.0
 qrcode==7.4.1
 streamlit==1.17.0
 pandas==1.5.3
+streamlit_qrcode_scanner==0.1.2
